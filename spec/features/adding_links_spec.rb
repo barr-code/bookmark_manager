@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require 'spec_helper'
 
 feature "User add a new link" do 
 	scenario "When browsing the homepage" do 
