@@ -5,6 +5,7 @@ gem 'data_mapper'
 gem 'dm-postgres-adapter'
 gem 'bcrypt'
 gem 'database_cleaner'
+gem 'rack-flash3'
 
 group :development, :test do
 	gem 'cucumber'
