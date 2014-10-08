@@ -4,12 +4,14 @@ require 'rack-flash'
 require './lib/link'
 require './lib/tag'
 require './lib/user'
-require './lib/data_mapper_setup'
+require_relative 'data_mapper_setup'
+require_relative 'helpers/session'
 
 
 enable :sessions
 set :session_secret, 'super secret'
 use Rack::Flash
+include SessionHelpers
 
 	get '/' do 
 		@links = Link.all
@@ -65,8 +67,8 @@ use Rack::Flash
 		end
 	end
 
-	helpers do 
-		def current_user
-			@current_user ||=User.get(session[:user_id]) if session[:user_id]
-		end
+	delete '/sessions' do 
+		flash[:notice] = "Good bye!"
+		session[:user_id] = nil
+		redirect to('/')
 	end
