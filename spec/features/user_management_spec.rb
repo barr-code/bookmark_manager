@@ -14,7 +14,7 @@ def sign_in(email,password)
 		fill_in 'email', :with => email
 		fill_in 'password', :with => password
 		click_button 'Sign in'
-	end
+end
 
 feature "User signs up" do
 	
@@ -73,9 +73,15 @@ feature "User signs out" do
 	end
 end
 
+def reset_request(email)
+	visit '/users/reset_password'
+	fill_in('email', :with => email)
+	click_button("Reset Password")
+end
+
 feature "User forgets password" do
 	before(:each) do 
-		User.create(:email => "test@test.com")
+		User.create(:email => "test@test.com", :password_token => 'LoLu4gotyrPasswrd')
 	end
 
 	scenario "while at sign in" do
@@ -85,9 +91,12 @@ feature "User forgets password" do
 	end
 
 	scenario "submitting email" do
-		visit '/users/reset_password'
-		fill_in('email', :with => "test@test.com")
-		click_button("Reset Password")
-		expect(page).to have_content("A password reset code has been sent test@test.com. Please check your email.")
+		reset_request('test@test.com')
+		expect(page).to have_content("A password reset code has been sent test@test.com. Please check your email.")	
+	end
+
+	scenario "clicking reset link" do
+		visit 'users/new_password?token=LoLu4gotyrPasswrd'
+		expect(page).to have_content "Please choose a new password."
 	end
 end

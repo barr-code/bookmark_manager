@@ -74,7 +74,7 @@ include SessionHelpers
 	end
 
 	get '/users/reset_password' do 
-		erb :password_reset
+		erb :"password/reset"
 	end
 
 	post '/users/reset_password' do 
@@ -83,7 +83,13 @@ include SessionHelpers
 		user.password_token = (1..64).map{("A".."Z").to_a.sample}.join
 		user.password_token_timestamp = Time.now
 		user.save
-		erb :password_reset
+		erb :"password/reset"
+	end
+
+	get '/users/new_password' do
+		@token = params[:token]
+		@user = User.first(:password_token => @token)
+		erb :"password/new"
 	end
 
 
