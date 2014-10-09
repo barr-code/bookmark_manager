@@ -3,7 +3,6 @@
 		Welcome, <%= current_user.email %>
 	<% end %>
 	<%= yield %>
-</body>
 
 <% if flash[:errors] && !flash[:errors].empty? %>
 	Sorry, there were the following problems with the form.
@@ -21,9 +20,17 @@
 <% end %>
 
 <% if current_user %>
-	Welcome, <%= current_user.email %>
 	<form action="/sessions" method="post">
 		<input type="hidden" name="_method" value="delete">
 		<input type="submit" value="Sign out">
 	</form>
 <% end %>
+
+<% if !current_user %>
+
+		<form action="/sessions/new" method="get">
+		User Login: <input type="submit" value="Sign In">
+		</form>
+	<% end %>
+
+</body>
